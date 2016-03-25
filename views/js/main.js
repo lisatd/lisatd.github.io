@@ -458,7 +458,8 @@ var resizePizzas = function(size) {
     return dx;
   }
 
-  // Iterates through pizza elements on the page and changes their widths
+  // Iterates through pizza elements on the page and changes their widths,
+  // Calculate their new width only once based on the first elem in list of pizzas
   function changePizzaSizes(size) {
     var dx = determineDx(pizzaContainer[0], size);
     var newwidth = (pizzaContainer[0].offsetWidth + dx) + 'px';
@@ -513,12 +514,12 @@ var items = document.getElementsByClassName('mover'); // getElements better perf
 
 // throttles the callback function to run only once per 100ms
 function throttle(callback) {
-  var wait = false;
+  var wait = false; // default not waiting
   return function () {
-    if (!wait) {
-      callback();
-      wait = true;
-      setTimeout(function() { wait = false;}, 100);
+    if (!wait) { // if not waiting,
+      callback(); // run callback func
+      wait = true; // now waiting
+      setTimeout(function() { wait = false;}, 100); // wait for 100ms
     }
   };
 }
@@ -559,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var s = 256;
   // move DOM selection outside of for loop
   var movingPizzasDiv = document.getElementById("movingPizzas1");
-  for (var i = 0; i < 40; i++) { // reduce # of pizzas generated
+  for (var i = 0; i < 40; i++) { // reduce # of background pizzas generated
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
