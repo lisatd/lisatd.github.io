@@ -12,5 +12,6 @@ Changes Done for Optimization
 
 How to Run
 --------------------------------
-No setup needed. Can be viewed at [lisatd.github.io](http://lisatd.githib.io) for the profile, and
-[lisatd.github.io/views/pizza.html](http://lisatd.github.io/views/pizza.html)for the Pizzeria.
+No setup needed. Navigate to:
+* [Profile](http://lisatd.githib.io)
+* [Pizzeria](http://lisatd.github.io/views/pizza.html) for the Pizzeria.
