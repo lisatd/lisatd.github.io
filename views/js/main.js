@@ -398,12 +398,20 @@ var pizzaElementGenerator = function(i) {
   return pizzaContainer;
 };
 
+//moved all of DOM lookups outside of resizePizzas() so they only occur once
+
+var pizzaContainer = document.getElementsByClassName("randomPizzaContainer"); // better performance with getElement
+
+// width of randomPizzas form to use in determineDx() func
+var windowWidth = document.getElementById("randomPizzas").offsetWidth; // getElementById() better performance
+
+// use getElementById() instead of querySelector for better performance
+var pizzaSizeDiv = document.getElementById('pizzaSize');
+
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
 
-  // use getElementById() instead of querySelector for better performance
-  var pizzaSizeDiv = document.getElementById('pizzaSize');
   // Changes the value for the size of the pizza above the slider
   function changeSliderLabel(size) {
     switch(size) {
@@ -425,7 +433,7 @@ var resizePizzas = function(size) {
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   // Pass in windowWidth so it does not to be calculated every time method is called in a loop
-  function determineDx (elem, size, windowWidth) {
+  function determineDx (elem, size) {
     var oldWidth = elem.offsetWidth;
     var oldSize = oldWidth / windowWidth;
 
@@ -452,11 +460,9 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    var pizzaContainer = document.getElementsByClassName("randomPizzaContainer");
-    // width of randomPizzas form to use in determineDx() func
-    var windowWidth = document.getElementById("randomPizzas").offsetWidth; // getElementById() better performance
+    var dx = determineDx(pizzaContainer[0], size);
+    var newwidth = (pizzaContainer[0].offsetWidth + dx) + 'px';
     for (var i = 0; i < pizzaContainer.length; i++) {
-      var newwidth = (pizzaContainer[i].offsetWidth + determineDx(pizzaContainer[i], size, windowWidth)) + 'px';
       pizzaContainer[i].style.width = newwidth;
     }
   }
