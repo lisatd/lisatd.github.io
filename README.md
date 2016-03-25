@@ -13,7 +13,6 @@ Changes Done for Optimization
 
 ###### Pizzeria Optimization
 **Improving FPS**
-
 1. Replace `querySelector()` with `getElementsByClassName()` or `getElementById`.
 2. Prevent multiple DOM traversals by moving code outside of loops, switch statements, or functions with multiple calls.
 3. Reduce number of background pizzas from 200 to 40.
@@ -24,7 +23,6 @@ Changes Done for Optimization
     * d. Create throttle function to throttle calls to `updatePositions()` to once per 100ms.
 
 **Improving pizza resizing**
-
 1. Prevent mulitple DOM traversals by moving code to outside of `resizePizzas()`.
 2. Calculate the new width of pizzas only once, outside of for loop, instead of for every pizza.
 
