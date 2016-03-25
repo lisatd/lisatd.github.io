@@ -508,20 +508,36 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+// lookup for mover elems only done once outside of event
+var items = document.getElementsByClassName('mover'); // getElements better performance
+
+// throttles the callback function to run only once per 100ms
+function throttle(callback) {
+  var wait = false;
+  return function () {
+    if (!wait) {
+      callback();
+      wait = true;
+      setTimeout(function() { wait = false;}, 100);
+    }
+  };
+}
+
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.getElementsByClassName('mover'); // getElements better performance
+  // calculating scrollTop is moved outside for loop
   var scrollTop = (document.body.scrollTop / 1250);
   // Move sin calculation to outside for loop
   // Since there are only 5 possible values for phase, put the all in array to lookup in for loop
-    var sin = [Math.sin(scrollTop), Math.sin(scrollTop + 1), Math.sin(scrollTop + 2), Math.sin(scrollTop + 3),
-        Math.sin(scrollTop + 4)];
+  var sin = [Math.sin(scrollTop)*100-1250, Math.sin(scrollTop + 1)*100-1250, Math.sin(scrollTop + 2)*100-1250,
+    Math.sin(scrollTop + 3)*100-1250, Math.sin(scrollTop + 4)*100-1250];
+
   for (var i = 0; i < items.length; i++) {
     // use transform instead of style.left to prevent rerender for better FPS
-      items[i].style.transform = 'translateX(' + (items[i].basicLeft + 100 * sin[i%5] -1250) + 'px)';
+      items[i].style.transform = 'translateX(' + (items[i].basicLeft + sin[i%5]) + 'px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -534,8 +550,8 @@ function updatePositions() {
   }
 }
 
-// runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
+// runs throttled updatePositions on scroll
+window.addEventListener('scroll', throttle(updatePositions));
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
