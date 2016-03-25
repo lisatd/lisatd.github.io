@@ -18,10 +18,10 @@ Changes Done for Optimization
 2. Prevent multiple DOM traversals by moving code outside of loops, switch statements, or functions with multiple calls.
 3. Reduce number of background pizzas from 200 to 40.
 4. Improve `updatePositions()`.
-    a. Store all five possible phase values in an array to look up instead of performing the calculation for every pizza.
-    b. Use translate instead of left for positioning.
-    c. Moved calculation of scrollTop position to outside for loop.
-    d. Create throttle function to throttle calls to `updatePositions()` to once per 100ms.
+    * Store all five possible phase values in an array to look up instead of performing the calculation for every pizza.
+    * Use translate instead of left for positioning.
+    * Moved calculation of scrollTop position to outside for loop.
+    * Create throttle function to throttle calls to `updatePositions()` to once per 100ms.
 
 **Improving pizza resizing**
 
